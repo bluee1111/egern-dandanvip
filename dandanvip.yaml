@@ -1,0 +1,62 @@
+name: "蛋蛋不语 VIP 解锁"
+description: "改写蛋蛋不语用户资料接口响应的会员字段，解锁 VIP 显示（原生 jq，无需远端脚本）"
+author: "bluee1111"
+homepage: "https://github.com/bluee1111/egern-dandanvip"
+icon: "crown.fill"
+
+# 上游 Loon 插件：curtinp118/Loon plugins/dandanvip.lpx
+# 脚本：curtinp118/Scripthub scripts/dandanvip/dandanvip_unlock.js v1.1.0
+
+compat_arguments:
+  VIP_NAME: "TG@Curtinp118"
+  VIP_AVATAR: "https://i.ibb.co/NgghpGgn/11zon-A9-CBAC35-2-CA3-4-E7F-923-D-7304-EEB40635.webp"
+
+compat_arguments_desc: |
+  VIP_NAME=App 内显示的昵称（默认沿用上游作者值，建议改成你自己的）
+  VIP_AVATAR=App 内显示的头像图片直链
+
+# 核心：只改写响应体。原脚本用 JS 做 Object.assign，这里改成 Egern 原生 jq，不需要下载/执行远端脚本。
+# 对象和数组两种返回结构都覆盖。
+body_rewrites:
+  - response_jq:
+      match: "^http://38\\.76\\.202\\.248:8000/.*profiles.*"
+      filter: >-
+        if type == "array" then
+          map(. + {vip_status: true, vip_level: 3, vip_expire_at: "2099-09-19T22:21:06.147807+00:00", username: "{{{VIP_NAME}}}", avatar_url: "{{{VIP_AVATAR}}}"})
+        else
+          . + {vip_status: true, vip_level: 3, vip_expire_at: "2099-09-19T22:21:06.147807+00:00", username: "{{{VIP_NAME}}}", avatar_url: "{{{VIP_AVATAR}}}"}
+        end
+
+# 原 Loon 插件 [Rule] 段列了 12 个域名但没写策略，等于没生效（装饰性列表），这里不转换。
+# App 自身/视频源走直连，方便时把下面整段取消注释：
+#
+# rules:
+#   - domain_suffix:
+#       match: "api.wwzy.tv"
+#       policy: DIRECT
+#   - domain_suffix:
+#       match: "bfzyapi.com"
+#       policy: DIRECT
+#   - domain_suffix:
+#       match: "img.picbf.com"
+#       policy: DIRECT
+#   - domain_suffix:
+#       match: "v10.baofeng10.com"
+#       policy: DIRECT
+#   - domain_suffix:
+#       match: "s1.fengbao9.com"
+#       policy: DIRECT
+#   - domain_suffix:
+#       match: "s2.bfllvip.com"
+#       policy: DIRECT
+#   - domain_suffix:
+#       match: "develop202.github.io"
+#       policy: DIRECT
+#   - ip_cidr:
+#       match: "38.76.202.248/32"
+#       policy: DIRECT
+
+mitm:
+  hostnames:
+    includes:
+      - "38.76.202.248"
