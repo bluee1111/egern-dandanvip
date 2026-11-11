@@ -1,0 +1,27 @@
+name: "蛋蛋不语 · 上报探针"
+description: "把命中请求的 URL / 状态码 / 响应结构键名上报到 webhook（不发字段值）。排查完删除。"
+author: "bluee1111"
+homepage: "https://github.com/bluee1111/egern-dandanvip"
+icon: "antenna.radiowaves.left.and.right"
+
+scriptings:
+  # 目标：蛋蛋不语后端
+  - http_response:
+      name: "上报·蛋蛋不语接口"
+      match: "^https?://38\\.76\\.202\\.248(:[0-9]+)?/"
+      script_url: "https://cdn.jsdelivr.net/gh/bluee1111/egern-dandanvip@main/dandanvip-report.js"
+      body_required: true
+      timeout: 20
+
+  # 全量明文 HTTP：看 App 到底访问了哪些域名
+  - http_response:
+      name: "上报·全部明文HTTP"
+      match: "^http://"
+      script_url: "https://cdn.jsdelivr.net/gh/bluee1111/egern-dandanvip@main/dandanvip-report.js"
+      body_required: true
+      timeout: 20
+
+mitm:
+  hostnames:
+    includes:
+      - "38.76.202.248"
