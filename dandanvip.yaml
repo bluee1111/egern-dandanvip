@@ -8,12 +8,12 @@ icon: "crown.fill"
 # 脚本：curtinp118/Scripthub scripts/dandanvip/dandanvip_unlock.js v1.1.0
 
 compat_arguments:
-  VIP_NAME: "TG@Curtinp118"
-  VIP_AVATAR: "https://i.ibb.co/NgghpGgn/11zon-A9-CBAC35-2-CA3-4-E7F-923-D-7304-EEB40635.webp"
+  VIP_NAME: "@wuyifan901106"
+  VIP_AVATAR: "https://cdn.jsdelivr.net/gh/bluee1111/egern-dandanvip@main/avatar.jpg"
 
 compat_arguments_desc: |
-  VIP_NAME=App 内显示的昵称（默认沿用上游作者值，建议改成你自己的）
-  VIP_AVATAR=App 内显示的头像图片直链
+  VIP_NAME=App 内显示的昵称
+  VIP_AVATAR=App 内显示的头像图片直链（当前用的是你 TG 头像的副本，存在本模块仓库里）
 
 # 核心：只改写响应体。原脚本用 JS 做 Object.assign，这里改成 Egern 原生 jq，不需要下载/执行远端脚本。
 # 对象和数组两种返回结构都覆盖。
