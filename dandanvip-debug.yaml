@@ -1,0 +1,20 @@
+name: "蛋蛋不语 · 调试探针"
+description: "抓到 38.76.202.248 的任何请求就弹通知，显示真实 URL 与响应结构。不改响应体，排查完请删除本模块。"
+author: "bluee1111"
+homepage: "https://github.com/bluee1111/egern-dandanvip"
+icon: "ladybug.fill"
+
+# 纯观察：命中就通知，不修改任何响应
+scriptings:
+  - http_response:
+      name: "蛋蛋不语 抓包探针"
+      match: "^https?://38\\.76\\.202\\.248(:[0-9]+)?/"
+      script_url: "https://raw.githubusercontent.com/bluee1111/egern-dandanvip/main/dandanvip-debug.js"
+      body_required: true
+      timeout: 30
+      max_size: 4194304
+
+mitm:
+  hostnames:
+    includes:
+      - "38.76.202.248"
